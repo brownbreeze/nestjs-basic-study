@@ -1,10 +1,18 @@
 import { Controller, Delete, Get, Param, Put, Body, Post } from '@nestjs/common';
+import { CatsService } from './cats.service';
 import {CreateCatDto} from './CreateCatDto';
+import { Cat } from './interface/cat.interface';
+
 @Controller('cats')
 export class CatsController {
+
+    constructor(private catsService: CatsService) {}
+    // private으로할 경우 선언과 초기화가 동시에 됨 
+
     @Get()
-    findAll(): string{
-        return 'this action returns all cats';
+    findAll(): Cat[]{
+        return this.catsService.findAll();
+        //'this action returns all cats';
     }
 
     @Get(':id')
@@ -14,7 +22,7 @@ export class CatsController {
 
     @Post()
     create(@Body() createCatDto:CreateCatDto){
-        return 'This action adds a new cat';
+        return this.catsService.create(createCatDto);
 
     }
     @Put(':id')
